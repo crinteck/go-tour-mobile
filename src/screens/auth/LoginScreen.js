@@ -14,7 +14,7 @@ import {
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   return (
     <Box safeArea flex={1} bg="white" p={4} justifyContent="center">
       <Center>
@@ -25,12 +25,17 @@ const LoginScreen = () => {
           w={"150"}
           resizeMode="contain"
         />
-        <Text color={"orange.500"} marginBottom={10} fontWeight="bold" fontStyle={"italic"}>
+        <Text
+          color={"orange.500"}
+          marginBottom={10}
+          fontWeight="bold"
+          fontStyle={"italic"}
+        >
           Voyager devient un plaisir!
         </Text>
         <Stack space={2} w="100%">
           <FormControl isRequired>
-            <FormControl.Label>Téléphone/E-mail</FormControl.Label>
+            <FormControl.Label>Téléphone</FormControl.Label>
             <Input variant="rounded" p={2} placeholder="" />
           </FormControl>
           <FormControl isRequired>
@@ -60,8 +65,13 @@ const LoginScreen = () => {
             Se connecter
           </Button>
 
-          <Button rounded={"full"} variant={"outline"} mt="10">
-            S'incrire
+          <Button
+            rounded={"full"}
+            variant={"outline"}
+            mt="10"
+            onPress={() => navigation.navigate("RegisterScreen")}
+          >
+            S'inscrire
           </Button>
         </Stack>
       </Center>
