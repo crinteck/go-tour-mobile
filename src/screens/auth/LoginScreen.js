@@ -14,7 +14,7 @@ import {
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   return (
     <Box safeArea flex={1} bg="white" p={4} justifyContent="center">
       <Center>
@@ -61,7 +61,11 @@ const LoginScreen = ({navigation}) => {
               Mot de passe oublié?
             </Link>
           </Box>
-          <Button rounded={"full"} mt={4}>
+          <Button
+            rounded={"full"}
+            mt={4}
+            onPress={() => navigation.navigate("HomeScreen")}
+          >
             Se connecter
           </Button>
 

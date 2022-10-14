@@ -3,6 +3,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
+import TabNavigator from "./TabNavigator";
 
 const Stack = createNativeStackNavigator();
 const RootNavigation = () => {
@@ -12,6 +13,11 @@ const RootNavigation = () => {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       </Stack.Group>
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="HomeScreen"
+        component={TabNavigator}
+      />
     </Stack.Navigator>
   );
 };
