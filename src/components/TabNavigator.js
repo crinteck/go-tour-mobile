@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, Fontisto, AntDesign } from "@expo/vector-icons";
 import SearchScreen from "../screens/search/SearchScreen";
+import UserTicketNavigation from "./UserTicketNavigation";
 
 function SettingsScreen() {
   return (
@@ -29,11 +30,12 @@ const TabNavigator = () => {
         component={SearchScreen}
       />
       <Tab.Screen
-        name="Tickets"
+        name="UserTickets"
         options={{
+          headerShown: false,
           tabBarIcon: (props) => <Fontisto name="bus-ticket" {...props} />,
         }}
-        component={SettingsScreen}
+        component={UserTicketNavigation}
       />
       <Tab.Screen
         name="User"
