@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, Fontisto, AntDesign } from "@expo/vector-icons";
 import SearchScreen from "../screens/search/SearchScreen";
 import UserTicketNavigation from "./UserTicketNavigation";
+import UserNavigation from "./UserNavigation";
 
 function SettingsScreen() {
   return (
@@ -40,9 +41,10 @@ const TabNavigator = () => {
       <Tab.Screen
         name="User"
         options={{
+          headerShown: false,
           tabBarIcon: (props) => <AntDesign name="user" {...props} />,
         }}
-        component={SettingsScreen}
+        component={UserNavigation}
       />
     </Tab.Navigator>
   );
