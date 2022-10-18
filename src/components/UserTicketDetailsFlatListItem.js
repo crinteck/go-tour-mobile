@@ -10,20 +10,21 @@ import {
   Stack,
   Button,
   Icon,
+  Pressable,
+  Divider,
 } from "native-base";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import QRCode from "react-native-qrcode-svg";
 
-const UserFlatListItem = () => {
-  const navigation = useNavigation();
+const UserTicketDetailsFlatListItem = () => {
   return (
     <Box
       bg={"white"}
       borderRadius="lg"
       paddingLeft={4}
       paddingRight={4}
-      paddingTop={10}
-      paddingBottom={10}
+      paddingTop={5}
+      paddingBottom={5}
       marginBottom={5}
     >
       <Box
@@ -32,8 +33,8 @@ const UserFlatListItem = () => {
         borderRadius="full"
         backgroundColor={"gray.100"}
         position={"absolute"}
-        top={-15}
-        left={"50%"}
+        bottom={"35%"}
+        left={-15}
       ></Box>
       <Box
         height={30}
@@ -41,9 +42,17 @@ const UserFlatListItem = () => {
         borderRadius="full"
         backgroundColor={"gray.100"}
         position={"absolute"}
-        bottom={-15}
-        left={"50%"}
+        bottom={"35%"}
+        right={-15}
       ></Box>
+      <Divider
+        borderStyle={"dashed"}
+        borderWidth={1}
+        position="absolute"
+        bottom={"38%"}
+        borderColor="gray.500"
+        left={4}
+      />
       <Stack space={4}>
         <HStack space={4} justifyContent="space-between" alignItems={"center"}>
           <Heading size="sm">June 16,2022</Heading>
@@ -77,15 +86,20 @@ const UserFlatListItem = () => {
           <Heading size="sm">23:20</Heading>
         </HStack>
         <HStack space={4} justifyContent="space-between">
-          <Stack maxW={"80%"}>
+          <Stack>
             <Heading size="sm" numberOfLines={1}>
               Touristique Transport
             </Heading>
             <Text color={"muted.400"}>Agence</Text>
           </Stack>
-          <Heading size="sm">
-            <Icon size={4} as={<Feather name="users" />} /> 1
-          </Heading>
+        </HStack>
+        <HStack space={4} justifyContent="space-between">
+          <Stack>
+            <Heading size="sm" numberOfLines={1}>
+              Eric Ghislain AWONO
+            </Heading>
+            <Text color={"muted.400"}>Passager</Text>
+          </Stack>
         </HStack>
         <HStack space={4} justifyContent="space-between">
           <Stack>
@@ -105,16 +119,21 @@ const UserFlatListItem = () => {
             36 350 FCFA
           </Badge>
         </HStack>
-        <Button
-          mt={3}
-          onPress={() => navigation?.navigate("UserTicketDetails")}
-          rounded={"full"}
-        >
-          Détails du ticket
-        </Button>
+
+        <Stack space={4} justifyContent="center" alignItems={"center"} mt={4}>
+          <QRCode value="428-125-XXXX" />
+          <HStack justifyContent={"space-between"} mt={4} w={"100%"}>
+            <Pressable>
+              <Icon size={6} as={<Feather name="download" />} />
+            </Pressable>
+            <Pressable>
+              <Icon size={6} as={<Feather name="info" />} />
+            </Pressable>
+          </HStack>
+        </Stack>
       </Stack>
     </Box>
   );
 };
 
-export default UserFlatListItem;
+export default UserTicketDetailsFlatListItem;

@@ -1,12 +1,29 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { useLayoutEffect } from "react";
+import { View, Text, Box, ScrollView } from "native-base";
+import UserTicketDetailsFlatListItem from "../../components/UserTicketDetailsFlatListItem";
 
-const userTicketDetails = () => {
+const UserTicketDetails = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation?.setOptions({
+      headerShown: false,
+    });
+
+    return () => {};
+  }, []);
   return (
-    <View>
-      <Text>userTicketDetails</Text>
-    </View>
-  )
-}
+    <ScrollView
+      safeArea
+      paddingLeft={4}
+      paddingRight={4}
+      paddingTop={10}
+      paddingBottom={10}
+    >
+      <UserTicketDetailsFlatListItem />
+      <UserTicketDetailsFlatListItem />
+      <UserTicketDetailsFlatListItem />
+      <UserTicketDetailsFlatListItem />
+    </ScrollView>
+  );
+};
 
-export default userTicketDetails
+export default UserTicketDetails;
