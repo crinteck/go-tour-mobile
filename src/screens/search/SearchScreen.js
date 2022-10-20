@@ -44,7 +44,7 @@ const SearchScreen = ({ navigation }) => {
           <BlurView
             intensity={80}
             tint="dark"
-            style={{ flex: 1, justifyContent: "center", padding: 4, }}
+            style={{ flex: 1, justifyContent: "center", padding: 4 }}
           >
             <Heading color={"white"}>Réserver votre ticket</Heading>
             <Heading color="white" size="sm">
@@ -106,7 +106,7 @@ const SearchScreen = ({ navigation }) => {
               <Stack flex={1}>
                 <Text color={"muted.400"}>ARRIVEE</Text>
                 <Heading size={"sm"} numberOfLines={1}>
-                  Kaye,Kaye
+                  Kayes,Kayes
                 </Heading>
               </Stack>
             </Pressable>
@@ -137,7 +137,11 @@ const SearchScreen = ({ navigation }) => {
             </Pressable>
           </HStack>
           <Divider />
-          <Button mt={4} rounded={"full"}>
+          <Button
+            onPress={() => navigation?.navigate("TicketListScreen")}
+            mt={4}
+            rounded={"full"}
+          >
             Rechercher
           </Button>
         </Stack>

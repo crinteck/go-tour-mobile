@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, Fontisto, AntDesign } from "@expo/vector-icons";
-import SearchScreen from "../screens/search/SearchScreen";
 import UserTicketNavigation from "./UserTicketNavigation";
 import UserNavigation from "./UserNavigation";
+import SearchNavigation from "./SearchNavigation";
 
 function SettingsScreen() {
   return (
@@ -25,10 +25,11 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: (props) => <Ionicons name="search" {...props} />,
         }}
-        name="SearchScreen"
-        component={SearchScreen}
+        name="Search"
+        component={SearchNavigation}
       />
       <Tab.Screen
         name="UserTickets"
