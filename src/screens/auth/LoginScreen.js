@@ -117,7 +117,7 @@ const LoginScreen = ({ navigation }) => {
               rounded={"full"}
               variant={"outline"}
               mt="10"
-              onPress={handleSubmit}
+              onPress={()=>navigation.navigate('RegisterScreen')}
             >
               S'inscrire
             </Button>
