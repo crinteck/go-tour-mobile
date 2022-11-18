@@ -11,14 +11,16 @@ import {
   Button,
   Pressable,
   Icon,
+  Toast,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Yup from "yup";
 import { useFormik, FormikProvider } from "formik";
 import { useState } from "react";
+import * as authService from "../../services/auth";
 
-const validation = Yup.object().shape({
-  phone: Yup.string().min(8).max(8).required(),
+const loginSchema = Yup.object().shape({
+  login: Yup.string().min(8).required(),
   password: Yup.string().min(8).max(64).required(),
 });
 
@@ -26,14 +28,39 @@ const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const formik = useFormik({
     initialValues: {
-      phone: "",
+      login: "",
       password: "",
     },
-    onSubmit: () => {},
-    validationSchema: validation,
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      authService
+        .login(values)
+        .then(
+          (response) => {
+            console.log(response?.data);
+          },
+          (reason) => {
+            Toast.show({
+              bg: "error.400",
+              description: `${reason?.response?.data || reason?.message}`,
+            });
+            console.log(reason?.message);
+          }
+        )
+        .finally(() => {
+          setSubmitting(false);
+        });
+    },
   });
 
-  const { errors, handleChange, handleSubmit, values } = formik;
+  const {
+    errors,
+    handleChange,
+    handleSubmit,
+    values,
+    setSubmitting,
+    isSubmitting,
+  } = formik;
   return (
     <FormikProvider value={formik}>
       <Box safeArea flex={1} bg="white" p={4} justifyContent="center">
@@ -54,19 +81,18 @@ const LoginScreen = ({ navigation }) => {
             Voyager devient un plaisir!
           </Text>
           <Stack space={2} w="100%">
-            <FormControl isRequired isInvalid={"phone" in errors}>
-              <FormControl.Label>Téléphone</FormControl.Label>
+            <FormControl isRequired isInvalid={"login" in errors}>
+              <FormControl.Label>Télélogin</FormControl.Label>
               <Input
                 fontSize={16}
-                onChangeText={handleChange("phone")}
-                keyboardType="phone-pad"
-                value={values.phone}
+                onChangeText={handleChange("login")}
+                value={values.login}
                 variant="rounded"
                 p={2}
                 placeholder=""
               />
               <FormControl.ErrorMessage>
-                {errors.phone}
+                {errors.login}
               </FormControl.ErrorMessage>
             </FormControl>
             <FormControl isRequired isInvalid={"password" in errors}>
@@ -109,7 +135,12 @@ const LoginScreen = ({ navigation }) => {
                 Mot de passe oublié?
               </Link>
             </Box>
-            <Button rounded={"full"} mt={4} onPress={handleSubmit}>
+            <Button
+              isLoading={isSubmitting}
+              rounded={"full"}
+              mt={4}
+              onPress={handleSubmit}
+            >
               Se connecter
             </Button>
 
@@ -117,7 +148,7 @@ const LoginScreen = ({ navigation }) => {
               rounded={"full"}
               variant={"outline"}
               mt="10"
-              onPress={()=>navigation.navigate('RegisterScreen')}
+              onPress={() => navigation.navigate("RegisterScreen")}
             >
               S'inscrire
             </Button>
