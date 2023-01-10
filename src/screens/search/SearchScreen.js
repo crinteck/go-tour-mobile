@@ -23,6 +23,7 @@ import {
 } from "@expo/vector-icons";
 import { ImageBackground } from "react-native";
 import { BlurView } from "expo-blur";
+import { StatusBar } from "expo-status-bar";
 
 const SearchScreen = ({ navigation }) => {
   const selectRef = useRef();
@@ -34,7 +35,8 @@ const SearchScreen = ({ navigation }) => {
     return () => {};
   }, []);
   return (
-    <Box safeArea bgColor="white" flex={1} justifyContent="center">
+    <Box  bgColor="white" flex={1} justifyContent="center">
+    <StatusBar style="light"/>
       <Box h={"50%"} safeArea>
         <ImageBackground
           style={{ flex: 1, marginTop: -80 }}
@@ -46,7 +48,7 @@ const SearchScreen = ({ navigation }) => {
             tint="dark"
             style={{ flex: 1, justifyContent: "center", padding: 4 }}
           >
-            <Heading color={"white"}>Réserver votre ticket</Heading>
+            <Heading color={"white"}>Achetez un ticket pour votre prochain voyage!</Heading>
             <Heading color="white" size="sm">
               Où voulez-vous aller ?
             </Heading>

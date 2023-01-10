@@ -18,6 +18,8 @@ import * as Yup from "yup";
 import { useFormik, FormikProvider } from "formik";
 import { useState } from "react";
 import * as authService from "../../services/auth";
+import { authState } from "../../atoms/authState";
+import { useRecoilState } from "recoil";
 
 const loginSchema = Yup.object().shape({
   login: Yup.string().min(8).required(),
@@ -25,6 +27,7 @@ const loginSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
+  const [authValue, setAuthValue] = useRecoilState(authState);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const formik = useFormik({
     initialValues: {
@@ -37,14 +40,13 @@ const LoginScreen = ({ navigation }) => {
         .login(values)
         .then(
           (response) => {
-            console.log(response?.data);
+            setAuthValue(response?.data);
           },
           (reason) => {
             Toast.show({
               bg: "error.400",
               description: `${reason?.response?.data || reason?.message}`,
             });
-            console.log(reason?.message);
           }
         )
         .finally(() => {
