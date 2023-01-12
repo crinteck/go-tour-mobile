@@ -16,8 +16,11 @@ import {
 } from "native-base";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import QRCode from "react-native-qrcode-svg";
+import dayjs from "dayjs";
+import { getHourFromDate } from "../utils/commonHelper";
+import currency from "currency.js";
 
-const TicketListFlatListItem = () => {
+const TravelsFlatListItem = ({ item }) => {
   return (
     <Box
       bg={"white"}
@@ -58,25 +61,41 @@ const TicketListFlatListItem = () => {
         <HStack space={4} justifyContent="space-between">
           <Stack maxW={"80%"}>
             <Heading size="sm" numberOfLines={1}>
-              Bamako
+              {`${item?.travels_params?.routes.cities_routes_iddepartureTocities?.libelle
+                ?.charAt(0)
+                ?.toUpperCase()}${item?.travels_params?.routes.cities_routes_iddepartureTocities?.libelle?.slice(
+                1
+              )}`}
             </Heading>
-            <Text color={"muted.400"}>11-10-2022</Text>
+            <Text color={"muted.400"}>
+              {dayjs(item.startDate).format("DD-MM-YYYY")}
+            </Text>
           </Stack>
-          <Heading size="sm">16:20</Heading>
+          <Heading size="sm">{getHourFromDate(item?.startHour)}</Heading>
         </HStack>
         <HStack space={4} justifyContent="space-between">
           <Stack maxW={"80%"}>
             <Heading size="sm" numberOfLines={1}>
-              Kayes
+              {`${item?.travels_params?.routes.cities_routes_idarrivalTocities?.libelle
+                ?.charAt(0)
+                ?.toUpperCase()}${item?.travels_params?.routes.cities_routes_idarrivalTocities?.libelle?.slice(
+                1
+              )}`}
             </Heading>
-            <Text color={"muted.400"}>12-10-2022</Text>
+            <Text color={"muted.400"}>
+              {dayjs(item.endDate).format("DD-MM-YYYY")}
+            </Text>
           </Stack>
-          <Heading size="sm">23:20</Heading>
+          <Heading size="sm">{getHourFromDate(item?.endHour)}</Heading>
         </HStack>
         <HStack space={4} justifyContent="space-between">
           <Stack>
             <Heading size="sm" numberOfLines={1}>
-              Touristique Transport
+              {`${item?.travels_params?.agencies?.compagnies?.denomination
+                ?.charAt(0)
+                ?.toUpperCase()}${item?.travels_params?.agencies?.compagnies?.denomination?.slice(
+                1
+              )}`}
             </Heading>
             <Text color={"muted.400"}>Agence</Text>
           </Stack>
@@ -86,7 +105,11 @@ const TicketListFlatListItem = () => {
           <Link isUnderlined={false} color={"muted.400"}>
             Achetez maintenant à{" "}
             <Text fontWeight={"bold"} color="black">
-              6 500 FCFA
+              {currency(Number(item.travels_params.price)).format({
+                separator: " ",
+                precision: 0,
+                symbol: "",
+              })} FCFA
             </Text>
           </Link>
         </Stack>
@@ -95,4 +118,4 @@ const TicketListFlatListItem = () => {
   );
 };
 
-export default TicketListFlatListItem;
+export default TravelsFlatListItem;

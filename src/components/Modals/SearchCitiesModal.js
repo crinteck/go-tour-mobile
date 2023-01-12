@@ -39,7 +39,6 @@ const SearchCitiesModal = ({
     citiesService.fetchCities().then(
       (response) => {
         setCities(response.data);
-        console.log(response.data);
       },
       (reason) => console.log(reason?.response?.data)
     );

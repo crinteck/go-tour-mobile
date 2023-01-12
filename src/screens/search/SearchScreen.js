@@ -21,16 +21,20 @@ import {
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { ImageBackground, TouchableOpacity } from "react-native";
 import { BlurView } from "expo-blur";
 import { StatusBar } from "expo-status-bar";
 import SearchCitiesModal from "../../components/Modals/SearchCitiesModal";
+import dayjs from "dayjs";
 
 const SearchScreen = ({ navigation }) => {
   const [visibleCityModal, setVisibleCityModal] = useState(false);
   const [searchCityType, setSearchCityType] = useState();
   const [arrival, setArrival] = useState();
   const [departure, setDeparture] = useState();
+  const [searchDate, setSearchDate] = useState(dayjs().toDate());
+  const [dateTimePickerOpen, setDateTimePickerOpen] = useState(false);
   useLayoutEffect(() => {
     navigation?.setOptions({
       headerShown: false,
@@ -144,36 +148,49 @@ const SearchScreen = ({ navigation }) => {
                       ? `${arrival.libelle
                           ?.charAt(0)
                           ?.toUpperCase()}${arrival.libelle?.slice(1)}`
-                      : "Votre ville de départ"}
+                      : "Votre ville de destination"}
                   </Heading>
                 </Stack>
               </HStack>
             </TouchableOpacity>
             <Divider />
-            <HStack space={3}>
-              <Box
-                h={45}
-                w={45}
-                bg={"gray.100"}
-                borderRadius={8}
-                justifyContent="center"
-                alignItems={"center"}
-              >
-                <Icon
-                  as={<FontAwesome name="calendar" />}
-                  color="primary.900"
-                  size={6}
+            <TouchableOpacity
+              onPress={() => {
+                setDateTimePickerOpen(true);
+              }}
+            >
+              {dateTimePickerOpen === true && (
+                <DateTimePicker
+                  value={searchDate}
+                  onChange={(ev, date) => {
+                    setSearchDate(date);
+                    setDateTimePickerOpen(false);
+                  }}
                 />
-              </Box>
-              <Pressable>
+              )}
+              <HStack space={3}>
+                <Box
+                  h={45}
+                  w={45}
+                  bg={"gray.100"}
+                  borderRadius={8}
+                  justifyContent="center"
+                  alignItems={"center"}
+                >
+                  <Icon
+                    as={<FontAwesome name="calendar" />}
+                    color="primary.900"
+                    size={6}
+                  />
+                </Box>
                 <Stack flex={1}>
                   <Text color={"muted.400"}>DATE</Text>
                   <Heading size={"sm"} numberOfLines={1}>
-                    Kaye,Kaye
+                    {dayjs(searchDate).format("DD-MM-YYYY")}
                   </Heading>
                 </Stack>
-              </Pressable>
-            </HStack>
+              </HStack>
+            </TouchableOpacity>
             <Divider />
             <Button
               onPress={() => navigation?.navigate("TicketListScreen")}
