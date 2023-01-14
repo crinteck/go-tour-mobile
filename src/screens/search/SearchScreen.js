@@ -15,6 +15,7 @@ import {
   Divider,
   Button,
   Image,
+  Toast,
 } from "native-base";
 import {
   MaterialIcons,
@@ -58,6 +59,28 @@ const SearchScreen = ({ navigation }) => {
     if (searchCityType === "DEPARTURE") {
       return setDeparture(city);
     }
+  };
+
+  const goToTravelsList = () => {
+    if (!departure) {
+      return Toast.show({
+        bg: "error.400",
+        description: `Sélectionnez une ville de départ.`,
+      });
+    }
+    if (!arrival) {
+      return Toast.show({
+        bg: "error.400",
+        description: `Sélectionnez une ville d'arrivée.`,
+      });
+    }
+    if (arrival.idcities === departure.idcities) {
+      return Toast.show({
+        bg: "error.400",
+        description: `La ville d'arrivée doit être différente de la ville départ.`,
+      });
+    }
+    navigation?.navigate("TicketListScreen");
   };
 
   return (
@@ -170,9 +193,9 @@ const SearchScreen = ({ navigation }) => {
             >
               {dateTimePickerOpen === true && (
                 <DateTimePicker
-                  value={searchDate}
+                  value={searchDate.toDate()}
                   onChange={(ev, date) => {
-                    setSearchDate(date);
+                    setSearchDate(dayjs(date));
                     setDateTimePickerOpen(false);
                   }}
                 />
@@ -201,11 +224,7 @@ const SearchScreen = ({ navigation }) => {
               </HStack>
             </TouchableOpacity>
             <Divider />
-            <Button
-              onPress={() => navigation?.navigate("TicketListScreen")}
-              mt={4}
-              rounded={"full"}
-            >
+            <Button onPress={goToTravelsList} mt={4} rounded={"full"}>
               Rechercher
             </Button>
           </Stack>

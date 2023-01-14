@@ -1,5 +1,5 @@
 import { api } from "../axios/api";
 
-export const findAll = async () => {
-  return api.get(`travels`);
+export const findAll = async (q = "") => {
+  return api.get(`travels?${q}`);
 };

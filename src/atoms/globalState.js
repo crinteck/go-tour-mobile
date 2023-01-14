@@ -5,12 +5,12 @@ dayjs.locale("fr");
 
 export const departureState = atom({
   key: "departure",
-  default: "",
+  default: null,
 });
 
 export const arrivalState = atom({
   key: "arrival",
-  default: "",
+  default: null,
 });
 
 export const startDateState = atom({

@@ -109,7 +109,8 @@ const TravelsFlatListItem = ({ item }) => {
                 separator: " ",
                 precision: 0,
                 symbol: "",
-              })} FCFA
+              })}{" "}
+              FCFA
             </Text>
           </Link>
         </Stack>

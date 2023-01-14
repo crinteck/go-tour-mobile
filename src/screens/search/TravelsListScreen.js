@@ -17,19 +17,43 @@ import TravelsFlatListItem from "../../components/TravelsFlatListItem";
 import * as travelsService from "../../services/travelsService";
 import * as compagniesService from "../../services/compagniesService";
 import CompagnyFlatListItem from "../../components/CompagnyFlatListItem";
+import {
+  arrivalState,
+  departureState,
+  startDateState,
+  formattedStartDateState,
+} from "../../atoms/globalState";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const TravelsListScreen = ({ navigation }) => {
   const [travels, setTravels] = useState();
   const [compagnies, setCompagnies] = useState();
+
+  const [arrival, setArrival] = useRecoilState(arrivalState);
+  const [departure, setDeparture] = useRecoilState(departureState);
+  const [searchDate, setSearchDate] = useRecoilState(startDateState);
+  const formattedStartDate = useRecoilValue(formattedStartDateState);
+
+  const [selectedCompany, setSelectedCompany] = useState();
+
   const fetchTravels = () => {
-    travelsService.findAll().then(
-      (response) => {
-        setTravels(response?.data);
-      },
-      (reason) => {
-        console.log(reason?.response?.data);
-      }
-    );
+    console.log(selectedCompany);
+    travelsService
+      .findAll(
+        `arrival=${arrival?.idcities}&departure=${
+          departure?.idcities
+        }&startDate=${searchDate.format(
+          "YYYY-MM-DD"
+        )}&company=${selectedCompany}`
+      )
+      .then(
+        (response) => {
+          setTravels(response?.data);
+        },
+        (reason) => {
+          console.log(reason?.response?.data);
+        }
+      );
   };
   const fetchCompagnies = () => {
     compagniesService.findAll().then(
@@ -39,10 +63,9 @@ const TravelsListScreen = ({ navigation }) => {
         data.unshift({
           uuid: "display-all-items",
           denomination: "Toutes",
-          idcompagnies: null,
+          idcompagnies: undefined,
         });
         setCompagnies(data);
-        console.log(response?.data);
       },
       (reason) => {
         console.log(reason?.response?.data);
@@ -54,6 +77,9 @@ const TravelsListScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchTravels();
+    return () => {};
+  }, [selectedCompany]);
+  useEffect(() => {
     fetchCompagnies();
 
     return () => {};
@@ -63,9 +89,12 @@ const TravelsListScreen = ({ navigation }) => {
     navigation?.setOptions({
       headerShown: false,
     });
-
     return () => {};
   }, []);
+
+  const handleCompanyItem = (idcompanies) => {
+    setSelectedCompany(idcompanies);
+  };
   return (
     <Fragment>
       <StatusBar barStyle={"dark-content"} />
@@ -85,10 +114,16 @@ const TravelsListScreen = ({ navigation }) => {
             </Button>
             <VStack flex={1}>
               <Heading textAlign={"center"} numberOfLines={1} size={"sm"}>
-                Kaye - Bamako
+                {`${departure?.libelle
+                  ?.charAt(0)
+                  .toUpperCase()}${departure?.libelle?.slice(1)}`}{" "}
+                -
+                {` ${arrival?.libelle
+                  ?.charAt(0)
+                  .toUpperCase()}${arrival?.libelle?.slice(1)}`}
               </Heading>
               <Text textAlign={"center"} color="gray.400">
-                Lun,12 Mars 2023
+                {formattedStartDate}
               </Text>
             </VStack>
           </HStack>
@@ -98,7 +133,11 @@ const TravelsListScreen = ({ navigation }) => {
             data={compagnies}
             keyExtractor={(item) => item.uuid}
             renderItem={({ item, index }) => (
-              <CompagnyFlatListItem item={item} />
+              <CompagnyFlatListItem
+                item={item}
+                selectedCompany={selectedCompany}
+                onPress={handleCompanyItem}
+              />
             )}
           />
         </VStack>
