@@ -27,14 +27,23 @@ import { BlurView } from "expo-blur";
 import { StatusBar } from "expo-status-bar";
 import SearchCitiesModal from "../../components/Modals/SearchCitiesModal";
 import dayjs from "dayjs";
+import {
+  formattedStartDateState,
+  arrivalState,
+  departureState,
+  startDateState,
+} from "../../atoms/globalState";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const SearchScreen = ({ navigation }) => {
   const [visibleCityModal, setVisibleCityModal] = useState(false);
   const [searchCityType, setSearchCityType] = useState();
-  const [arrival, setArrival] = useState();
-  const [departure, setDeparture] = useState();
-  const [searchDate, setSearchDate] = useState(dayjs().toDate());
+  const [arrival, setArrival] = useRecoilState(arrivalState);
+  const [departure, setDeparture] = useRecoilState(departureState);
+  const [searchDate, setSearchDate] = useRecoilState(startDateState);
   const [dateTimePickerOpen, setDateTimePickerOpen] = useState(false);
+  const formattedStartDate = useRecoilValue(formattedStartDateState);
+
   useLayoutEffect(() => {
     navigation?.setOptions({
       headerShown: false,
@@ -186,7 +195,7 @@ const SearchScreen = ({ navigation }) => {
                 <Stack flex={1}>
                   <Text color={"muted.400"}>DATE</Text>
                   <Heading size={"sm"} numberOfLines={1}>
-                    {dayjs(searchDate).format("DD-MM-YYYY")}
+                    {formattedStartDate}
                   </Heading>
                 </Stack>
               </HStack>
