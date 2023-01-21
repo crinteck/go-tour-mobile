@@ -30,25 +30,25 @@ const UserFlatListItem = ({ item }) => {
       paddingBottom={10}
       marginBottom={5}
     >
-        <Box
-          height={30}
-          width={30}
-          borderRadius="full"
-          backgroundColor={"gray.100"}
-          position={"absolute"}
-          top={-15}
-          left={"50%"}
-        ></Box>
-        <Box
-          height={30}
-          width={30}
-          borderRadius="full"
-          backgroundColor={"gray.100"}
-          position={"absolute"}
-          bottom={-15}
-          left={"50%"}
-        ></Box>
-      <Pressable>
+      <Box
+        height={30}
+        width={30}
+        borderRadius="full"
+        backgroundColor={"gray.100"}
+        position={"absolute"}
+        top={-15}
+        left={"50%"}
+      ></Box>
+      <Box
+        height={30}
+        width={30}
+        borderRadius="full"
+        backgroundColor={"gray.100"}
+        position={"absolute"}
+        bottom={-15}
+        left={"50%"}
+      ></Box>
+      <Pressable on>
         <Stack space={4}>
           <HStack
             space={4}
