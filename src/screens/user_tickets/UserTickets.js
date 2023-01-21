@@ -1,8 +1,22 @@
-import { useLayoutEffect } from "react";
-import { View, Text, Box, ScrollView } from "native-base";
+import { Fragment, useLayoutEffect, useState, useEffect } from "react";
+import { Box, FlatList, ScrollView, StatusBar } from "native-base";
 import UserFlatListItem from "../../components/UserFlatListItem";
 
+import * as ticketsService from "../../services/ticketsService";
+
 const UserTickets = ({ navigation }) => {
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState([]);
+
+  const fetchTickets = () => {
+    ticketsService.tickets().then((response) => {
+      console.log(response.data);
+      setTickets(response?.data);
+    });
+  };
+
+  const _renderItem = ({ item }) => <UserFlatListItem item={item} />;
+
   useLayoutEffect(() => {
     navigation?.setOptions({
       headerShown: false,
@@ -10,19 +24,29 @@ const UserTickets = ({ navigation }) => {
 
     return () => {};
   }, []);
+
+  useEffect(() => {
+    fetchTickets();
+
+    return () => {};
+  }, []);
+
   return (
-    <ScrollView
-      safeArea
-      paddingLeft={4}
-      paddingRight={4}
-      paddingTop={10}
-      paddingBottom={10}
-    >
-      <UserFlatListItem />
-      <UserFlatListItem />
-      <UserFlatListItem />
-      <UserFlatListItem />
-    </ScrollView>
+    <Fragment>
+      <StatusBar barStyle={"dark-content"} backgroundColor="white" />
+      <Box mt={3}>
+        <FlatList
+          safeArea
+          paddingLeft={4}
+          paddingRight={4}
+          paddingTop={10}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+          data={tickets}
+          keyExtractor={(item) => item?.code}
+          renderItem={_renderItem}
+        />
+      </Box>
+    </Fragment>
   );
 };
 

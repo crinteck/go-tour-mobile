@@ -19,8 +19,16 @@ import QRCode from "react-native-qrcode-svg";
 import dayjs from "dayjs";
 import { getHourFromDate } from "../utils/commonHelper";
 import currency from "currency.js";
+import { useNavigation } from "@react-navigation/native";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedBookingTravelState } from "../atoms/globalState";
 
 const TravelsFlatListItem = ({ item }) => {
+  const [selectedTravel, setSelectedTravel] = useRecoilState(
+    selectedBookingTravelState
+  );
+
+  const navigation = useNavigation();
   return (
     <Box
       bg={"white"}
@@ -102,10 +110,17 @@ const TravelsFlatListItem = ({ item }) => {
         </HStack>
 
         <Stack space={4} justifyContent="center" alignItems={"center"} mt={4}>
-          <Link isUnderlined={false} color={"muted.400"}>
+          <Link
+            isUnderlined={false}
+            color={"muted.400"}
+            onPress={() => {
+              setSelectedTravel(item);
+              navigation?.navigate("TravelReservationScreen");
+            }}
+          >
             Achetez maintenant à{" "}
-            <Text fontWeight={"bold"} color="black">
-              {currency(Number(item.travels_params.price)).format({
+            <Text fontWeight={"bold"} color="green.500">
+              {currency(item.travels_params.price).format({
                 separator: " ",
                 precision: 0,
                 symbol: "",

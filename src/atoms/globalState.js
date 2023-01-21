@@ -17,6 +17,10 @@ export const startDateState = atom({
   key: "startHour",
   default: dayjs(),
 });
+export const selectedBookingTravelState = atom({
+  key: "selectedBookingTravel",
+  default: null,
+});
 
 export const formattedStartDateState = selector({
   key: "formattedStartDate",
@@ -25,3 +29,4 @@ export const formattedStartDateState = selector({
     return startDate.format("dddd,D MMMM YY");
   },
 });
+
