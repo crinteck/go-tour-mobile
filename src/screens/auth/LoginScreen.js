@@ -87,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
           </Text>
           <Stack space={2} w="100%">
             <FormControl isRequired isInvalid={"login" in errors}>
-              <FormControl.Label>Télélogin</FormControl.Label>
+              <FormControl.Label>E-mail</FormControl.Label>
               <Input
                 fontSize={16}
                 onChangeText={handleChange("login")}

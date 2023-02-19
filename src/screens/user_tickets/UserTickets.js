@@ -1,21 +1,27 @@
 import { Fragment, useLayoutEffect, useState, useEffect } from "react";
 import { Box, FlatList, ScrollView, StatusBar } from "native-base";
-import UserFlatListItem from "../../components/UserFlatListItem";
+import UserTicketFlatListItem from "../../components/UserTicketFlatListItem";
 
 import * as ticketsService from "../../services/ticketsService";
 
 const UserTickets = ({ navigation }) => {
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchTickets = () => {
-    ticketsService.tickets().then((response) => {
-      console.log(response.data);
-      setTickets(response?.data);
-    });
+    setLoading(true);
+    ticketsService
+      .tickets()
+      .then((response) => {
+        setTickets(response?.data);
+      })
+      .catch((error) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const _renderItem = ({ item }) => <UserFlatListItem item={item} />;
+  const _renderItem = ({ item }) => <UserTicketFlatListItem item={item} />;
 
   useLayoutEffect(() => {
     navigation?.setOptions({
@@ -44,6 +50,8 @@ const UserTickets = ({ navigation }) => {
           data={tickets}
           keyExtractor={(item) => item?.code}
           renderItem={_renderItem}
+          refreshing={loading}
+          onRefresh={fetchTickets}
         />
       </Box>
     </Fragment>

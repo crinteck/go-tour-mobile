@@ -5,5 +5,9 @@ export const createTicket = async (data) => {
 };
 
 export const tickets = async () => {
-  return api.get(`tickets`);
+  return api.get(`tickets/t/user`);
+};
+
+export const findById = async (ticketId) => {
+  return api.get(`tickets/${ticketId}`);
 };

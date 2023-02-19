@@ -17,8 +17,9 @@ import { useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
 import { getHourFromDate } from "../utils/commonHelper";
 import currency from "currency.js";
+import QRCode from "react-native-qrcode-svg";
 
-const UserFlatListItem = ({ item }) => {
+const UserTicketFlatListItem = ({ item, showDetails = false }) => {
   const navigation = useNavigation();
   return (
     <Box
@@ -63,10 +64,18 @@ const UserFlatListItem = ({ item }) => {
                 fontSize: 16,
                 letterSpacing: 2,
               }}
-              colorScheme="primary"
+              colorScheme={
+                dayjs().diff(dayjs(item.startDate)) >= 0
+                  ? "coolGray"
+                  : "primary"
+              }
               borderRadius={"full"}
             >
-              Actif
+              {item.validated === 1
+                ? "Validé"
+                : dayjs().diff(dayjs(item.startDate)) >= 0
+                ? "Expiré"
+                : "Actif"}
             </Badge>
           </HStack>
           <HStack space={4} justifyContent="space-between">
@@ -130,7 +139,11 @@ const UserFlatListItem = ({ item }) => {
                 fontSize: 16,
                 letterSpacing: 2,
               }}
-              colorScheme="primary"
+              colorScheme={
+                dayjs().diff(dayjs(item.startDate)) >= 0
+                  ? "coolGray"
+                  : "primary"
+              }
               borderRadius={"full"}
             >
               {currency(Number(item?.price)).format({
@@ -140,17 +153,41 @@ const UserFlatListItem = ({ item }) => {
               })}
             </Badge>
           </HStack>
-          <Button
-            mt={3}
-            onPress={() => navigation?.navigate("UserTicketDetails")}
-            rounded={"full"}
-          >
-            Détails du ticket
-          </Button>
+          {showDetails !== true && (
+            <Button
+              mt={3}
+              onPress={() =>
+                navigation?.navigate("UserTicketDetails", {
+                  ticketId: item.idticket,
+                })
+              }
+              rounded={"full"}
+            >
+              Détails du ticket
+            </Button>
+          )}
+          {showDetails === true && (
+            <Stack
+              space={4}
+              justifyContent="center"
+              alignItems={"center"}
+              mt={4}
+            >
+              <QRCode value={item?.code} />
+              <HStack justifyContent={"space-between"} mt={4} w={"100%"}>
+                <Pressable>
+                  <Icon size={6} as={<Feather name="download" />} />
+                </Pressable>
+                <Pressable>
+                  <Icon size={6} as={<Feather name="info" />} />
+                </Pressable>
+              </HStack>
+            </Stack>
+          )}
         </Stack>
       </Pressable>
     </Box>
   );
 };
 
-export default UserFlatListItem;
+export default UserTicketFlatListItem;
