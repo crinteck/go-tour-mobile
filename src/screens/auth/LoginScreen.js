@@ -32,8 +32,8 @@ const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const formik = useFormik({
     initialValues: {
-      login: "bigmasterawono@gmail.com",
-      password: "password",
+      login: "",
+      password: "",
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {

@@ -37,7 +37,6 @@ const TravelsListScreen = ({ navigation }) => {
   const [selectedCompany, setSelectedCompany] = useState();
 
   const fetchTravels = () => {
-    console.log(selectedCompany);
     travelsService
       .findAll(
         `arrival=${arrival?.idcities}&departure=${
@@ -51,7 +50,6 @@ const TravelsListScreen = ({ navigation }) => {
           setTravels(response?.data);
         },
         (reason) => {
-          console.log(reason?.response?.data);
         }
       );
   };
@@ -68,7 +66,6 @@ const TravelsListScreen = ({ navigation }) => {
         setCompagnies(data);
       },
       (reason) => {
-        console.log(reason?.response?.data);
       }
     );
   };
@@ -128,7 +125,8 @@ const TravelsListScreen = ({ navigation }) => {
             </VStack>
           </HStack>
           <FlatList
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={{ flexGrow: 1, paddingVertical: 5 }}
+            showsHorizontalScrollIndicator={false}
             horizontal
             data={compagnies}
             keyExtractor={(item) => item.uuid}

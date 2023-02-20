@@ -45,7 +45,7 @@ const TravelsFlatListItem = ({ item }) => {
         borderRadius="full"
         backgroundColor={"gray.100"}
         position={"absolute"}
-        bottom={"20%"}
+        bottom={"25%"}
         left={-15}
       ></Box>
       <Box
@@ -54,14 +54,14 @@ const TravelsFlatListItem = ({ item }) => {
         borderRadius="full"
         backgroundColor={"gray.100"}
         position={"absolute"}
-        bottom={"20%"}
+        bottom={"25%"}
         right={-15}
       ></Box>
       <Divider
         borderStyle={"dashed"}
         borderWidth={1}
         position="absolute"
-        bottom={"26%"}
+        bottom={"32%"}
         borderColor="muted.400"
         left={4}
       />
@@ -108,26 +108,28 @@ const TravelsFlatListItem = ({ item }) => {
             <Text color={"muted.400"}>Agence</Text>
           </Stack>
         </HStack>
-
         <Stack space={4} justifyContent="center" alignItems={"center"} mt={4}>
-          <Link
-            isUnderlined={false}
+          <Button
+          mt={3}
             color={"muted.400"}
             onPress={() => {
               setSelectedTravel(item);
               navigation?.navigate("TravelReservationScreen");
             }}
+            rounded="full"
           >
-            Achetez maintenant à{" "}
-            <Text fontWeight={"bold"} color="green.500">
-              {currency(item.travels_params.price).format({
-                separator: " ",
-                precision: 0,
-                symbol: "",
-              })}{" "}
-              FCFA
+            <Text color={"white"}>
+              Réserver maintenant à{" "}
+              <Text fontWeight={"bold"} color="orange.400">
+                {currency(item.travels_params.price).format({
+                  separator: " ",
+                  precision: 0,
+                  symbol: "",
+                })}
+                FCFA
+              </Text>
             </Text>
-          </Link>
+          </Button>
         </Stack>
       </Stack>
     </Box>
