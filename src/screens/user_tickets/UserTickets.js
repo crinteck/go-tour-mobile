@@ -15,7 +15,7 @@ const UserTickets = ({ navigation }) => {
       .then((response) => {
         setTickets(response?.data);
       })
-      .catch((error) => {})
+      .catch((error) => { })
       .finally(() => {
         setLoading(false);
       });
@@ -28,18 +28,18 @@ const UserTickets = ({ navigation }) => {
       headerShown: false,
     });
 
-    return () => {};
+    return () => { };
   }, []);
 
   useEffect(() => {
     fetchTickets();
 
-    return () => {};
+    return () => { };
   }, []);
 
   return (
     <Fragment>
-      <StatusBar barStyle={"dark-content"} backgroundColor="white" />
+      <StatusBar backgroundColor="teal" style="light" />
       <Box mt={3}>
         <FlatList
           safeArea

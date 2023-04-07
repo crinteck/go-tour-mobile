@@ -10,19 +10,9 @@ export default function App() {
     <RecoilRoot>
       <NativeBaseProvider>
         <NavigationContainer>
-          <RootNavigation />
-          <StatusBar style="auto" />
+          <RootNavigation />         
         </NavigationContainer>
       </NativeBaseProvider>
     </RecoilRoot>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

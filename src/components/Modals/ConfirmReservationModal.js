@@ -65,7 +65,6 @@ const ConfirmReservationModal = ({
           navigation.goBack();
         },
         (reason) => {
-          console.log(reason);
           setIsOpen(true);
           setRequestError(reason?.response?.data || reason?.message);
         }

@@ -32,18 +32,16 @@ const RootNavigation = () => {
       .catch((reason) => {
         setAuthValue(null);
       });
-    return () => {};
+    return () => { };
   }, []);
   return (
     <Stack.Navigator>
       {authValue ? (
-        <>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="HomeScreen"
-            component={TabNavigator}
-          />
-        </>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="HomeScreen"
+          component={TabNavigator}
+        />
       ) : (
         <Stack.Group screenOptions={{ headerShown: false }}>
           <Stack.Screen name="LoginScreen" component={LoginScreen} />

@@ -76,7 +76,7 @@ const TravelsFlatListItem = ({ item }) => {
               )}`}
             </Heading>
             <Text color={"muted.400"}>
-              {dayjs(item.startDate).format("DD-MM-YYYY")}
+              {dayjs(item?.startDate).format("DD-MM-YYYY")}
             </Text>
           </Stack>
           <Heading size="sm">{getHourFromDate(item?.startHour)}</Heading>
@@ -91,7 +91,7 @@ const TravelsFlatListItem = ({ item }) => {
               )}`}
             </Heading>
             <Text color={"muted.400"}>
-              {dayjs(item.endDate).format("DD-MM-YYYY")}
+              {dayjs(item?.endDate).format("DD-MM-YYYY")}
             </Text>
           </Stack>
           <Heading size="sm">{getHourFromDate(item?.endHour)}</Heading>
@@ -121,7 +121,7 @@ const TravelsFlatListItem = ({ item }) => {
             <Text color={"white"}>
               Réserver maintenant à{" "}
               <Text fontWeight={"bold"} color="orange.400">
-                {currency(item.travels_params.price).format({
+                {currency(item?.travels_params.price).format({
                   separator: " ",
                   precision: 0,
                   symbol: "",

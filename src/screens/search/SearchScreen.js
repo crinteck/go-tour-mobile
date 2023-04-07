@@ -16,6 +16,7 @@ import {
   Button,
   Image,
   Toast,
+  ScrollView,
 } from "native-base";
 import {
   MaterialIcons,
@@ -28,6 +29,7 @@ import { BlurView } from "expo-blur";
 import { StatusBar } from "expo-status-bar";
 import SearchCitiesModal from "../../components/Modals/SearchCitiesModal";
 import dayjs from "dayjs";
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   formattedStartDateState,
   arrivalState,
@@ -35,6 +37,9 @@ import {
   startDateState,
 } from "../../atoms/globalState";
 import { useRecoilState, useRecoilValue } from "recoil";
+import TravelsFlatListItem from "../../components/TravelsFlatListItem";
+import { getHourFromDate } from "../../utils/commonHelper";
+import currency from "currency.js";
 
 const SearchScreen = ({ navigation }) => {
   const [visibleCityModal, setVisibleCityModal] = useState(false);
@@ -44,12 +49,37 @@ const SearchScreen = ({ navigation }) => {
   const [searchDate, setSearchDate] = useRecoilState(startDateState);
   const [dateTimePickerOpen, setDateTimePickerOpen] = useState(false);
   const formattedStartDate = useRecoilValue(formattedStartDateState);
+  const item = null;
 
   useLayoutEffect(() => {
     navigation?.setOptions({
-      headerShown: false,
+      headerShown: true,
+      headerStyle: { backgroundColor: "teal" },
+      headerTitle: () => (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image
+            source={require("../../assets/images/logo_type_login_redim.png")}
+            alt="App logo"
+            h={"50"}
+            w={"50"}
+            resizeMode="contain"
+          />
+          <Text style={{ color: "white", fontSize: 20, marginLeft: 10 }}>
+            Rechercher
+          </Text>
+
+        </View>
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("UserMenuScreen")}
+          style={{ marginRight: 10 }}
+        >
+          <FontAwesome name="user-circle" size={24} color="white" />
+        </TouchableOpacity>
+      ),
     });
-    return () => {};
+    return () => { };
   }, []);
 
   const handleSelectCity = (searchCityType, city) => {
@@ -85,27 +115,99 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <>
+      <StatusBar backgroundColor="teal" style="light" />
       <Box bgColor="white" flex={1} justifyContent="center">
-        <StatusBar style="light" />
-        <Box h={"50%"} safeArea>
-          <ImageBackground
-            style={{ flex: 1, marginTop: -80 }}
-            source={require("../../assets/images/coach-bus-rental-800x600.jpg")}
-            resizeMode="cover"
+        <Box h={"50%"} mt={-10}>
+          <LinearGradient
+            colors={['#4c669f', '#3b5998', '#192f6a']}
+            style={{ flex: 1 }}
           >
-            <BlurView
-              intensity={80}
-              tint="dark"
-              style={{ flex: 1, justifyContent: "center", padding: 4 }}
-            >
-              <Heading color={"white"}>
-                Achetez un ticket pour votre prochain voyage!
-              </Heading>
-              <Heading color="white" size="sm">
-                Où voulez-vous aller ?
-              </Heading>
-            </BlurView>
-          </ImageBackground>
+
+            <ScrollView horizontal pt={5} pb={5} >
+              <Box
+                bg={"white"}
+                borderRadius="lg"
+                paddingLeft={4}
+                paddingRight={4}
+                paddingTop={5}
+
+                marginLeft={5}
+                marginRight={5}
+                shadow={2}
+                width={330}
+                height={"80%"}
+              >
+
+                <Stack >
+                  <HStack space={4} justifyContent="space-between">
+                    <Stack maxW={"80%"}>
+                      <Heading size="sm" numberOfLines={1}>
+                        {`${item?.travels_params?.routes.cities_routes_iddepartureTocities?.libelle
+                          ?.charAt(0)
+                          ?.toUpperCase()}${item?.travels_params?.routes.cities_routes_iddepartureTocities?.libelle?.slice(
+                            1
+                          )}`}
+                      </Heading>
+                      <Text color={"muted.400"}>
+                        {dayjs(item?.startDate).format("DD-MM-YYYY")}
+                      </Text>
+                    </Stack>
+                    <Heading size="sm">{getHourFromDate(item?.startHour)}</Heading>
+                  </HStack>
+                  <HStack space={4} justifyContent="space-between">
+                    <Stack maxW={"80%"}>
+                      <Heading size="sm" numberOfLines={1}>
+                        {`${item?.travels_params?.routes.cities_routes_idarrivalTocities?.libelle
+                          ?.charAt(0)
+                          ?.toUpperCase()}${item?.travels_params?.routes.cities_routes_idarrivalTocities?.libelle?.slice(
+                            1
+                          )}`}
+                      </Heading>
+                      <Text color={"muted.400"}>
+                        {dayjs(item?.endDate).format("DD-MM-YYYY")}
+                      </Text>
+                    </Stack>
+                    <Heading size="sm">{getHourFromDate(item?.endHour)}</Heading>
+                  </HStack>
+
+                  <HStack space={4} justifyContent="space-between">
+                    <Stack>
+                      <Heading size="sm" numberOfLines={1}>
+                        {`${item?.travels_params?.agencies?.compagnies?.denomination
+                          ?.charAt(0)
+                          ?.toUpperCase()}${item?.travels_params?.agencies?.compagnies?.denomination?.slice(
+                            1
+                          )}`}
+                      </Heading>
+                      <Text color={"muted.400"}>Agence</Text>
+                    </Stack>
+                  </HStack>
+                  <Stack justifyContent="center" alignItems={"center"} mt={4} >
+                    <Button
+                      color={"muted.400"}
+                      onPress={() => {
+                        setSelectedTravel(item);
+                        navigation?.navigate("TravelReservationScreen");
+                      }}
+                      rounded="full"
+                    >
+                      <Text color={"white"}>
+                        Réserver maintenant à{" "}
+                        <Text fontWeight={"bold"} color="orange.400">
+                          {currency(item?.travels_params.price).format({
+                            separator: " ",
+                            precision: 0,
+                            symbol: "",
+                          })}
+                          FCFA
+                        </Text>
+                      </Text>
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Box>
+            </ScrollView>
+          </LinearGradient>
         </Box>
         <Box
           bgColor={"white"}
@@ -143,8 +245,8 @@ const SearchScreen = ({ navigation }) => {
                   <Heading size={"sm"} numberOfLines={1}>
                     {departure
                       ? `${departure.libelle
-                          ?.charAt(0)
-                          ?.toUpperCase()}${departure.libelle?.slice(1)}`
+                        ?.charAt(0)
+                        ?.toUpperCase()}${departure.libelle?.slice(1)}`
                       : "Votre ville de départ"}
                   </Heading>
                 </Stack>
@@ -178,8 +280,8 @@ const SearchScreen = ({ navigation }) => {
                   <Heading size={"sm"} numberOfLines={1}>
                     {arrival
                       ? `${arrival.libelle
-                          ?.charAt(0)
-                          ?.toUpperCase()}${arrival.libelle?.slice(1)}`
+                        ?.charAt(0)
+                        ?.toUpperCase()}${arrival.libelle?.slice(1)}`
                       : "Votre ville de destination"}
                   </Heading>
                 </Stack>

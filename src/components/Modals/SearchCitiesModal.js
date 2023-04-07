@@ -1,28 +1,16 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import {
-  View,
-  Text,
   Box,
   Heading,
-  Center,
   Stack,
-  VStack,
   Icon,
-  FormControl,
   HStack,
-  Select,
-  Pressable,
   Divider,
   Button,
-  Image,
-  ScrollView,
-  StatusBar,
   FlatList,
   Input,
 } from "native-base";
 import {
-  MaterialIcons,
-  FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Modal, TouchableOpacity } from "react-native";
@@ -30,18 +18,38 @@ import { Modal, TouchableOpacity } from "react-native";
 import * as citiesService from "../../services/citiesService";
 const SearchCitiesModal = ({
   visible = false,
-  setVisible = () => {},
-  handleSelectCity = () => {},
+  setVisible = () => { },
+  handleSelectCity = () => { },
   searchCityType = "",
 }) => {
   const [cities, setCities] = useState();
+  const [page, setPage] = useState(null);
+  const [totalCities, setTotalCities] = useState(0);
+  const [loading, setLoading] = useState(false);
   const fetchCities = () => {
+    setLoading(true);
     citiesService.fetchCities().then(
       (response) => {
-        setCities(response.data);
+        setCities(response.data.data);
+        setPage(response.data.page);
+        setTotalCities(response.data.total);
       },
-      (reason) => console.log(reason?.response?.data)
-    );
+      (reason) => {}
+    ).finally(() => setLoading(false));
+  };
+
+  const loadMoreCities = () => {
+    if (page < totalCities) {
+      setLoading(true);
+      citiesService.fetchCities(page + 1).then(
+        (response) => {
+          setCities([...cities, ...response.data.data]);
+          setPage(response.data.page);
+          setTotalCities(response.data.total);
+        },
+        (reason) => {}
+      ).finally(() => setLoading(false));
+    }
   };
 
   return (
@@ -76,6 +84,10 @@ const SearchCitiesModal = ({
         contentContainerStyle={{ flexGrow: 1, padding: 8 }}
         data={cities}
         keyExtractor={(item) => `${item.idcities}`}
+        onEndReached={loadMoreCities}
+        onEndReachedThreshold={0.5}
+        refreshing={loading}
+        onRefresh={fetchCities}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {

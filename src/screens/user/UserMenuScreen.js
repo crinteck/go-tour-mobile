@@ -10,23 +10,26 @@ import {
   Icon,
   VStack,
   HStack,
-  ScrollView
+  ScrollView,
+  StatusBar
 } from "native-base";
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import defaultUserImage from "../../assets/images/default-user.png";
 
 const UserMenuScreen = ({ navigation }) => {
-  useLayoutEffect(() => {
-    navigation?.setOptions({
-      headerShown: false,
-    });
-
-    return () => {};
-  }, []);
+  /*   useLayoutEffect(() => {
+      navigation?.setOptions({
+        headerShown: true,
+      });
+  
+      return () => {};
+    }, []); */
 
   return (
     <ScrollView safeArea bg="white" flexGrow={1} padding={4}>
+      <StatusBar backgroundColor="teal" style="light" />
+
       <Box mt={10}>
         <Center>
           <Stack space={4} alignItems={"center"}>
@@ -74,7 +77,7 @@ const UserMenuScreen = ({ navigation }) => {
           <TouchableOpacity>
             <HStack space={4} alignItems="center">
               <Box
-               shadow={2}
+                shadow={2}
                 h={10}
                 w={10}
                 backgroundColor={"gray.100"}
@@ -101,7 +104,7 @@ const UserMenuScreen = ({ navigation }) => {
           <TouchableOpacity>
             <HStack space={4} alignItems="center">
               <Box
-               shadow={2}
+                shadow={2}
                 h={10}
                 w={10}
                 backgroundColor={"gray.100"}
@@ -128,7 +131,7 @@ const UserMenuScreen = ({ navigation }) => {
           <TouchableOpacity>
             <HStack space={4} alignItems="center">
               <Box
-               shadow={2}
+                shadow={2}
                 h={10}
                 w={10}
                 backgroundColor={"gray.100"}
@@ -155,7 +158,7 @@ const UserMenuScreen = ({ navigation }) => {
           <TouchableOpacity>
             <HStack space={4} alignItems="center">
               <Box
-               shadow={2}
+                shadow={2}
                 h={10}
                 w={10}
                 backgroundColor={"gray.100"}
@@ -182,7 +185,7 @@ const UserMenuScreen = ({ navigation }) => {
           <TouchableOpacity>
             <HStack space={4} alignItems="center">
               <Box
-              shadow={2}
+                shadow={2}
                 h={10}
                 w={10}
                 backgroundColor={"gray.100"}
