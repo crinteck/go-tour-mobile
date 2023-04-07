@@ -37,9 +37,11 @@ import {
   startDateState,
 } from "../../atoms/globalState";
 import { useRecoilState, useRecoilValue } from "recoil";
-import TravelsFlatListItem from "../../components/TravelsFlatListItem";
 import { getHourFromDate } from "../../utils/commonHelper";
 import currency from "currency.js";
+import { Dimensions } from "react-native";
+import TravelSuggestionItem from "../../components/TravelSuggestionItem";
+import { travelsSuggestions } from "../../services/travelsService";
 
 const SearchScreen = ({ navigation }) => {
   const [visibleCityModal, setVisibleCityModal] = useState(false);
@@ -49,7 +51,7 @@ const SearchScreen = ({ navigation }) => {
   const [searchDate, setSearchDate] = useRecoilState(startDateState);
   const [dateTimePickerOpen, setDateTimePickerOpen] = useState(false);
   const formattedStartDate = useRecoilValue(formattedStartDateState);
-  const item = null;
+  const [travels, setTravels] = useState();
 
   useLayoutEffect(() => {
     navigation?.setOptions({
@@ -113,6 +115,24 @@ const SearchScreen = ({ navigation }) => {
     navigation?.navigate("TicketListScreen");
   };
 
+  const getTravelsSuggestions = async () => {
+    try {
+      const response = await travelsSuggestions({
+        page: 1, limit: 10,
+      });
+      if (response?.status === 200) {
+        setTravels(response?.data?.travels);
+      }
+    } catch (error) {
+
+    }
+  }
+
+  useLayoutEffect(() => {
+    getTravelsSuggestions();
+    return () => { };
+  }, []);
+
   return (
     <>
       <StatusBar backgroundColor="teal" style="light" />
@@ -123,89 +143,11 @@ const SearchScreen = ({ navigation }) => {
             style={{ flex: 1 }}
           >
 
-            <ScrollView horizontal pt={5} pb={5} >
-              <Box
-                bg={"white"}
-                borderRadius="lg"
-                paddingLeft={4}
-                paddingRight={4}
-                paddingTop={5}
+            <ScrollView horizontal pt={5} pb={5}  >
+              {travels?.map((item, index) =>
+                <TravelSuggestionItem key={index} item={item} />
+              )}
 
-                marginLeft={5}
-                marginRight={5}
-                shadow={2}
-                width={330}
-                height={"80%"}
-              >
-
-                <Stack >
-                  <HStack space={4} justifyContent="space-between">
-                    <Stack maxW={"80%"}>
-                      <Heading size="sm" numberOfLines={1}>
-                        {`${item?.travels_params?.routes.cities_routes_iddepartureTocities?.libelle
-                          ?.charAt(0)
-                          ?.toUpperCase()}${item?.travels_params?.routes.cities_routes_iddepartureTocities?.libelle?.slice(
-                            1
-                          )}`}
-                      </Heading>
-                      <Text color={"muted.400"}>
-                        {dayjs(item?.startDate).format("DD-MM-YYYY")}
-                      </Text>
-                    </Stack>
-                    <Heading size="sm">{getHourFromDate(item?.startHour)}</Heading>
-                  </HStack>
-                  <HStack space={4} justifyContent="space-between">
-                    <Stack maxW={"80%"}>
-                      <Heading size="sm" numberOfLines={1}>
-                        {`${item?.travels_params?.routes.cities_routes_idarrivalTocities?.libelle
-                          ?.charAt(0)
-                          ?.toUpperCase()}${item?.travels_params?.routes.cities_routes_idarrivalTocities?.libelle?.slice(
-                            1
-                          )}`}
-                      </Heading>
-                      <Text color={"muted.400"}>
-                        {dayjs(item?.endDate).format("DD-MM-YYYY")}
-                      </Text>
-                    </Stack>
-                    <Heading size="sm">{getHourFromDate(item?.endHour)}</Heading>
-                  </HStack>
-
-                  <HStack space={4} justifyContent="space-between">
-                    <Stack>
-                      <Heading size="sm" numberOfLines={1}>
-                        {`${item?.travels_params?.agencies?.compagnies?.denomination
-                          ?.charAt(0)
-                          ?.toUpperCase()}${item?.travels_params?.agencies?.compagnies?.denomination?.slice(
-                            1
-                          )}`}
-                      </Heading>
-                      <Text color={"muted.400"}>Agence</Text>
-                    </Stack>
-                  </HStack>
-                  <Stack justifyContent="center" alignItems={"center"} mt={4} >
-                    <Button
-                      color={"muted.400"}
-                      onPress={() => {
-                        setSelectedTravel(item);
-                        navigation?.navigate("TravelReservationScreen");
-                      }}
-                      rounded="full"
-                    >
-                      <Text color={"white"}>
-                        Réserver maintenant à{" "}
-                        <Text fontWeight={"bold"} color="orange.400">
-                          {currency(item?.travels_params.price).format({
-                            separator: " ",
-                            precision: 0,
-                            symbol: "",
-                          })}
-                          FCFA
-                        </Text>
-                      </Text>
-                    </Button>
-                  </Stack>
-                </Stack>
-              </Box>
             </ScrollView>
           </LinearGradient>
         </Box>

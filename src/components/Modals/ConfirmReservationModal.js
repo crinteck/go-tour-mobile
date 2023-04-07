@@ -84,7 +84,7 @@ const ConfirmReservationModal = ({
     >
       <Fragment>
         <Box flex={1} background={"gray.100"}>
-          <HStack space={3} bg="white" p={3} alignItems={"center"}>
+          <HStack space={3} style={{ backgroundColor: "teal" }} p={3} alignItems={"center"}>
             <Button
               rounded={"full"}
               bg="#FFFF"
@@ -92,11 +92,11 @@ const ConfirmReservationModal = ({
               onPress={() => setVisible(false)}
             >
               <Icon
-                size={6}
+                size={4}
                 as={<MaterialCommunityIcons name="arrow-left" />}
               />
             </Button>
-            <Heading color="muted.400" size={"sm"}>
+            <Heading color="white" size={"sm"}>
               Confirmation de la réservation
             </Heading>
           </HStack>

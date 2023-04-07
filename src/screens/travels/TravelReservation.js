@@ -30,6 +30,7 @@ import { FormikProvider, useFormik } from "formik";
 
 import * as yup from "yup";
 import { authState } from "../../atoms/authState";
+import dayjs from "dayjs";
 
 const validationSchema = yup.object().shape({
   is_owner: yup.number().max(1).min(0).required(),
@@ -59,6 +60,8 @@ const TravelReservation = ({ navigation }) => {
       idtravels: "",
     },
     validationSchema: validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
     onSubmit: (values) => {
       setConfirmModalVisible(true);
     },
@@ -76,19 +79,18 @@ const TravelReservation = ({ navigation }) => {
     navigation?.setOptions({
       headerShown: false,
     });
-    return () => {};
+    return () => { };
   }, []);
 
   useEffect(() => {
     setFieldValue("idtravels", selectedTravel?.idtravels);
-
-    return () => {};
+    return () => { };
   }, []);
 
   return (
     <Fragment>
-      <StatusBar barStyle={"dark-content"} />
-      <Box safeArea bg={"white"} p={3} pt={1} shadow={3}>
+      <StatusBar backgroundColor="teal" style="light" />
+      <Box safeArea style={{ backgroundColor: "teal" }} p={3} pt={1} shadow={3}>
         <VStack space={2}>
           <HStack>
             <Button
@@ -96,24 +98,25 @@ const TravelReservation = ({ navigation }) => {
               bg="#FFFF"
               shadow={3}
               onPress={() => navigation?.goBack()}
+              mr={3}
             >
               <Icon
-                size={6}
+                size={4}
                 as={<MaterialCommunityIcons name="arrow-left" />}
               />
             </Button>
-            <VStack flex={1}>
-              <Heading textAlign={"center"} numberOfLines={1} size={"sm"}>
-                {`${departure?.libelle
+            <VStack flex={1} color={"white"}>
+              <Heading color={"white"} textAlign={"center"} numberOfLines={1} size={"sm"}>
+                {`${departure?.libelle || selectedTravel?.travels_params?.routes?.cities_routes_idarrivalTocities?.libelle
                   ?.charAt(0)
-                  .toUpperCase()}${departure?.libelle?.slice(1)}`}{" "}
+                  .toUpperCase()}${(departure?.libelle || selectedTravel?.travels_params?.routes?.cities_routes_idarrivalTocities?.libelle)?.slice(1)}`}{" "}
                 -
-                {` ${arrival?.libelle
+                {` ${arrival?.libelle || selectedTravel?.travels_params?.routes?.cities_routes_iddepartureTocities?.libelle
                   ?.charAt(0)
-                  .toUpperCase()}${arrival?.libelle?.slice(1)}`}
+                  .toUpperCase()}${(arrival?.libelle || selectedTravel?.travels_params?.routes?.cities_routes_iddepartureTocities?.libelle)?.slice(1)}`}
               </Heading>
-              <Text textAlign={"center"} color="gray.400">
-                {formattedStartDate}
+              <Text color={"white"} textAlign={"center"} >
+                {departure ? formattedStartDate : dayjs(selectedTravel?.endDate).format("dddd,MMM-YYYY")}
               </Text>
             </VStack>
           </HStack>
@@ -138,8 +141,8 @@ const TravelReservation = ({ navigation }) => {
                 {`${selectedTravel?.travels_params?.agencies?.compagnies?.denomination
                   ?.charAt(0)
                   ?.toUpperCase()}${selectedTravel?.travels_params?.agencies?.compagnies?.denomination?.slice(
-                  1
-                )}`}
+                    1
+                  )}`}
               </Text>
             </VStack>
             <Divider mb={1} mt={1} />
