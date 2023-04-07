@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useState } from "react";
-import { View, Text, Box, ScrollView } from "native-base";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { View, Text, Box, ScrollView, StatusBar } from "native-base";
 import UserTicketDetailsFlatListItem from "../../components/UserTicketDetailsFlatListItem";
 
 import * as ticketsService from "../../services/ticketsService";
@@ -12,10 +12,23 @@ const UserTicketDetails = ({ navigation, route }) => {
   const { ticketId } = route.params;
   useLayoutEffect(() => {
     navigation?.setOptions({
-      headerShown: false,
+      headerShown: true,
+      headerTitle: () => (
+        <Text color="white" fontSize="lg">
+          Détails du ticket
+        </Text>
+      ),
+      headerTitleStyle: {
+        color: "white",
+      },
+      headerStyle: {
+        backgroundColor: "teal",
+      },
+      headerTintColor: "white",
+
     });
 
-    return () => {};
+    return () => { };
   }, []);
 
   const fetchTicket = async () => {
@@ -36,26 +49,29 @@ const UserTicketDetails = ({ navigation, route }) => {
       fetchTicket();
     }
 
-    return () => {};
+    return () => { };
   }, [ticketId]);
 
   return (
-    <ScrollView
-      safeArea
-      paddingLeft={4}
-      paddingRight={4}
-      marginTop={20}
-      contentContainerStyle={{ flexGrow: 1 }}
-      refreshControl={
-        <RefreshControl refreshing={loading} onRefresh={fetchTicket} />
-      }
-    >
-      {ticket && (
-        <Box>
-          <UserTicketFlatListItem item={ticket} showDetails={true} />
-        </Box>
-      )}
-    </ScrollView>
+    <React.Fragment>
+      <StatusBar backgroundColor="teal" style="light" />
+      <ScrollView
+        safeArea
+        paddingLeft={4}
+        paddingRight={4}
+        marginTop={4}
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={fetchTicket} />
+        }
+      >
+        {ticket && (
+          <Box>
+            <UserTicketFlatListItem item={ticket} showDetails={true} />
+          </Box>
+        )}
+      </ScrollView>
+    </React.Fragment>
   );
 };
 

@@ -13,18 +13,37 @@ import {
   ScrollView,
   StatusBar
 } from "native-base";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { Ionicons, Octicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import defaultUserImage from "../../assets/images/default-user.png";
 
+
 const UserMenuScreen = ({ navigation }) => {
-  /*   useLayoutEffect(() => {
-      navigation?.setOptions({
-        headerShown: true,
-      });
-  
-      return () => {};
-    }, []); */
+  useLayoutEffect(() => {
+    navigation?.setOptions({
+      headerShown: true,
+      headerTitle: () => (
+        <HStack justifyContent={"center"} alignItems={"center"} space={3}>
+          <Icon
+            as={<MaterialCommunityIcons name="contacts" />}
+            size="sm"
+            color="white"
+          />
+          <Text color="white" fontSize="lg">
+            Mon compte
+          </Text>
+        </HStack>
+      ),
+      headerTitleStyle: {
+        color: "white",
+      },
+      headerStyle: {
+        backgroundColor: "teal",
+      },
+    });
+
+    return () => { };
+  }, []);
 
   return (
     <ScrollView safeArea bg="white" flexGrow={1} padding={4}>

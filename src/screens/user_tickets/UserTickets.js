@@ -1,6 +1,7 @@
 import { Fragment, useLayoutEffect, useState, useEffect } from "react";
-import { Box, FlatList, ScrollView, StatusBar } from "native-base";
+import { Box, FlatList, HStack, Icon, ScrollView, StatusBar, Text } from "native-base";
 import UserTicketFlatListItem from "../../components/UserTicketFlatListItem";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import * as ticketsService from "../../services/ticketsService";
 
@@ -25,7 +26,25 @@ const UserTickets = ({ navigation }) => {
 
   useLayoutEffect(() => {
     navigation?.setOptions({
-      headerShown: false,
+      headerShown: true,
+      headerTitle: () => (
+        <HStack justifyContent={"center"} alignItems={"center"} space={3}>
+          <Icon
+            as={<MaterialCommunityIcons name="ticket" />}
+            size="sm"
+            color="white"
+          />
+          <Text color="white" fontSize="lg">
+            Mes billets
+          </Text>
+        </HStack>
+      ),
+      headerTitleStyle: {
+        color: "white",
+      },
+      headerStyle: {
+        backgroundColor: "teal",
+      },
     });
 
     return () => { };
@@ -45,7 +64,6 @@ const UserTickets = ({ navigation }) => {
           safeArea
           paddingLeft={4}
           paddingRight={4}
-          paddingTop={10}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
           data={tickets}
           keyExtractor={(item) => item?.code}
