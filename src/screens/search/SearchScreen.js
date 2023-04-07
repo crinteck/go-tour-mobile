@@ -29,7 +29,7 @@ import { BlurView } from "expo-blur";
 import { StatusBar } from "expo-status-bar";
 import SearchCitiesModal from "../../components/Modals/SearchCitiesModal";
 import dayjs from "dayjs";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import {
   formattedStartDateState,
   arrivalState,
@@ -69,7 +69,6 @@ const SearchScreen = ({ navigation }) => {
           <Text style={{ color: "white", fontSize: 20, marginLeft: 10 }}>
             Rechercher
           </Text>
-
         </View>
       ),
       headerRight: () => (
@@ -81,7 +80,7 @@ const SearchScreen = ({ navigation }) => {
         </TouchableOpacity>
       ),
     });
-    return () => { };
+    return () => {};
   }, []);
 
   const handleSelectCity = (searchCityType, city) => {
@@ -115,22 +114,20 @@ const SearchScreen = ({ navigation }) => {
     navigation?.navigate("TicketListScreen");
   };
 
-  const getTravelsSuggestions = async () => {
-    try {
-      const response = await travelsSuggestions({
-        page: 1, limit: 10,
-      });
-      if (response?.status === 200) {
-        setTravels(response?.data?.travels);
-      }
-    } catch (error) {
-
-    }
-  }
+  const getTravelsSuggestions = () => {
+    travelsSuggestions({
+      page: 1,
+      limit: 10,
+    })
+      .then((res) => {
+        setTravels(res.data?.travels);
+      })
+      .catch((err) => {});
+  };
 
   useLayoutEffect(() => {
     getTravelsSuggestions();
-    return () => { };
+    return () => {};
   }, []);
 
   return (
@@ -139,15 +136,23 @@ const SearchScreen = ({ navigation }) => {
       <Box bgColor="white" flex={1} justifyContent="center">
         <Box h={"50%"} mt={-10}>
           <LinearGradient
-            colors={['#4c669f', '#3b5998', '#192f6a']}
+            colors={["#4c669f", "#3b5998", "#192f6a"]}
             style={{ flex: 1 }}
           >
-
-            <ScrollView horizontal pt={5} pb={5}  >
-              {travels?.map((item, index) =>
-                <TravelSuggestionItem key={index} item={item} />
-              )}
-
+            <ScrollView
+              horizontal
+              pb={15}
+              pt={5}
+              contentContainerStyle={{
+                paddingHorizontal: 5,
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: Dimensions.get("window").width,
+              }}
+            >
+              {travels?.map((item, index) => (
+                <TravelSuggestionItem  style={ { alignSelf: 'flex-start' } }  key={index} item={item} />
+              ))}
             </ScrollView>
           </LinearGradient>
         </Box>
@@ -187,8 +192,8 @@ const SearchScreen = ({ navigation }) => {
                   <Heading size={"sm"} numberOfLines={1}>
                     {departure
                       ? `${departure.libelle
-                        ?.charAt(0)
-                        ?.toUpperCase()}${departure.libelle?.slice(1)}`
+                          ?.charAt(0)
+                          ?.toUpperCase()}${departure.libelle?.slice(1)}`
                       : "Votre ville de départ"}
                   </Heading>
                 </Stack>
@@ -222,8 +227,8 @@ const SearchScreen = ({ navigation }) => {
                   <Heading size={"sm"} numberOfLines={1}>
                     {arrival
                       ? `${arrival.libelle
-                        ?.charAt(0)
-                        ?.toUpperCase()}${arrival.libelle?.slice(1)}`
+                          ?.charAt(0)
+                          ?.toUpperCase()}${arrival.libelle?.slice(1)}`
                       : "Votre ville de destination"}
                   </Heading>
                 </Stack>

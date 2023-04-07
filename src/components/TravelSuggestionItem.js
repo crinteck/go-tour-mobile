@@ -16,7 +16,7 @@ import { formattedStartDateState, selectedBookingTravelState } from "../atoms/gl
 import { useRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
-const TravelSuggestionItem = ({ item }) => {
+const TravelSuggestionItem = ({ item, style }) => {
     const [selectedTravel, setSelectedTravel] = useRecoilState(
         selectedBookingTravelState
     );
@@ -29,12 +29,11 @@ const TravelSuggestionItem = ({ item }) => {
             paddingLeft={4}
             paddingRight={4}
             paddingTop={5}
-
-            marginLeft={5}
             marginRight={5}
             shadow={2}
-            width={Dimensions.get("window").width - 20}
+            width={Dimensions.get("window").width -10}
             height={"80%"}
+            style={style}
         >
             <Stack >
                 <HStack space={4} justifyContent="space-between">
